@@ -5,8 +5,8 @@ window = tk.Tk() # you may also see it named as "root" in other sources
 
 window.title("FAST PORT SCANNER") # self explanatory!
 window.geometry("300x300") # size of the window when it opens
-# window.minsize(width=300, height=300) # you can define the minimum size of the window like this
-# window.resizable(width="false", height="false") # change to false if you want to prevent resizing
+window.minsize(width=300, height=300) # you can define the minimum size of the window like this
+window.resizable(width="false", height="false") # change to false if you want to prevent resizing
 
 # WIDGETS
 # three frames on top of each other
@@ -32,12 +32,19 @@ def close_app():
 
 def run_app():
     print('run')
-    results = portscanner.do_scan(portscanner.ports, target_text.get())
-    log_text.insert(0.0, '\n '.join(results))
+    portscanner.open_ports = []
+    log_text.config(state=tk.NORMAL)
+    scan_target = target_text.get()
+    results = portscanner.scan(portscanner.ports, scan_target)
+    
+    log_text.insert(tk.END, 'Target: {}\n'.format(scan_target))
+    for port in results:
+        log_text.insert(tk.END, 'Open port found: {}{}'.format(str(port), '\n'))
+    
 
 
 def save_result():
-    pass
+    log_text.delete(1.0, tk.END)
 
 
 # label header to be placed in the frame_header
@@ -52,7 +59,7 @@ frame_main_1 = tk.Frame(center_frame, borderwidth=2, relief='sunken')
 # Put it simply: StringVar() allows you to easily track tkinter variables and see if they were read, changed, etc
 # check resources here for more details: http://effbot.org/tkinterbook/variable.htm
 
-target_text = tk.StringVar(window, value='127.0.0.1')
+target_text = tk.StringVar(window, value='google.com')
 
 # and populate them with the labels referring to the inputs we want from the user
 target_label = tk.Label(frame_main_1, text = "TARGET: ")
@@ -69,11 +76,11 @@ target.pack(side='left', padx=5)
 button_run = tk.Button(bottom_frame, text="Scan", command=run_app, bg='dark green', fg='white', relief='raised', width=10, font=('Helvetica 9 bold'))
 button_run.grid(column=0, row=0, sticky='w', padx=2, pady=2)
 
-button_save = tk.Button(bottom_frame, text="Save", command=save_result, bg='grey', fg='white', relief='raised', width=10, font=('Helvetica 9 bold'))
+button_save = tk.Button(bottom_frame, text="Clear", command=save_result, bg='red', fg='white', relief='raised', width=10, font=('Helvetica 9 bold'))
 button_save.grid(column=1, row=0, sticky='w', padx=2, pady=2)
 
 log_label = tk.Label(log_frame, text = "Logging:", bg='white', fg='black', height='1', width='29', font=("Helvetica 10"))
-log_text = tk.Text(log_frame, width=29, height=5)
+log_text = tk.Text(log_frame, width=29, height=8)
 
 log_label.grid(row=0, column=0)
 log_text.grid(row=1, column=0)
