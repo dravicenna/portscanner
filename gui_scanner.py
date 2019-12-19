@@ -35,7 +35,8 @@ def run_app():
     portscanner.open_ports = []
     log_text.config(state=tk.NORMAL)
     scan_target = target_text.get()
-    results = portscanner.scan(portscanner.ports, scan_target)
+    ports = portscanner.read_ports_from_file()
+    results = portscanner.scan(ports, scan_target)
     
     log_text.insert(tk.END, 'Target: {}\n'.format(scan_target))
     for port in results:
