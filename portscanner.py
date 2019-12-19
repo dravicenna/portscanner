@@ -4,10 +4,6 @@ from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import ThreadPoolExecutor
 import queue
 
-# TODO remove hardcoded portlist
-# ports = [21, 22, 23, 25, 38, 43, 80, 109, 110, 115, 118, 119, 143,  # Список портов
-#          194, 220, 443, 540, 585, 591, 1112, 1433, 1443, 3128, 3197,
-#          3306, 4000, 4333, 5100, 5432, 6669, 8000, 8080, 9014, 9200, 8500, 8501, 9000]
 
 # port_range = range(10000)
 file = 'ports_list.txt'
